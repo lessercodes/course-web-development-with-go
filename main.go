@@ -3,23 +3,23 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
 	"lessercodes.com/lenslocked/controllers"
+	"lessercodes.com/lenslocked/templates"
 	"lessercodes.com/lenslocked/views"
 )
 
 func main() {
 	r := chi.NewRouter()
 
-	tmpl := views.Must(views.Parse(filepath.Join("templates", "home.gohtml")))
+	tmpl := views.Must(views.ParseFS(templates.FS, "home.gohtml"))
 	r.Get("/", controllers.StaticHandler(tmpl))
 
-	tmpl = views.Must(views.Parse(filepath.Join("templates", "contact.gohtml")))
+	tmpl = views.Must(views.ParseFS(templates.FS, "contact.gohtml"))
 	r.Get("/contact", controllers.StaticHandler(tmpl))
 
-	tmpl = views.Must(views.Parse(filepath.Join("templates", "faq.gohtml")))
+	tmpl = views.Must(views.ParseFS(templates.FS, "faq.gohtml"))
 	r.Get("/faq", controllers.StaticHandler(tmpl))
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
